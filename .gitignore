@@ -1,2 +1,3 @@
 .venv
 weekly_tasks.ics
+/db/weekly_tasks.db
