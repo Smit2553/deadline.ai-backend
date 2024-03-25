@@ -16,23 +16,33 @@ def read_root():
     ]
     return values
 
+
 @app.get("/weekly_tasks")
 def read_weekly_tasks():
     conn = sqlite3.connect('../db/tasks.db')
     c = conn.cursor()
+    c.execute('PRAGMA table_info(weekly_tasks)')
+    columns = [column[1] for column in c.fetchall()]
     c.execute('SELECT * FROM weekly_tasks')
     tasks = c.fetchall()
     conn.close()
-    return tasks
+    
+    tasks_with_columns = [dict(zip(columns, task)) for task in tasks]
+    
+    return tasks_with_columns
+
 
 @app.get("/tasks")
 def read_all_tasks():
     conn = sqlite3.connect('../db/tasks.db')
     c = conn.cursor()
+    c.execute('PRAGMA table_info(all_tasks)')
+    columns = [column[1] for column in c.fetchall()]
     c.execute('SELECT * FROM all_tasks')
     tasks = c.fetchall()
     conn.close()
-    return tasks
+    tasks_with_columns = [dict(zip(columns, task)) for task in tasks]
+    return tasks_with_columns
 
 @app.get("/tasks/{task_id}")
 def read_task(task_id: str):
