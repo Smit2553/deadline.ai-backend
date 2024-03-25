@@ -1,0 +1,2 @@
+fastapi==0.110.0
+icalendar==5.0.12
